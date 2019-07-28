@@ -8,8 +8,20 @@ using namespace std;
 
 // n == Amount of Flowers
 const int n = 20, iterations = 1000;
-
 const float p = 0.8;
+const bool applyLimits = false;
+
+vector<float> lowerLimit(dimensions), upperLimit(dimensions);
+vector<float> limit(vector<float> vec)
+{
+  if (!applyLimits) return(vec);
+  for (int i = 0; i < dimensions; i ++)
+  {
+    vec[i] = min(upperLimit[i], vec[i]);
+    vec[i] = max(lowerLimit[i], vec[i]);
+  }
+  return(vec);
+}
 
 float f(vector<float> &x)
 {
@@ -26,7 +38,11 @@ struct Flower
   {
     x.resize(dimensions);
     for (int i = 0; i < dimensions; i ++)
-      x[i] = (rand() - RAND_MAX/2.0) / (RAND_MAX/2.0);
+    {
+      float value = (rand() - RAND_MAX/2.0) / (RAND_MAX/2.0);
+      if (applyLimits) x[i] = lowerLimit[i] + (upperLimit[i] - lowerLimit[i]) * value;
+      else x[i] = value;
+    }
     evaluate();
   }
   float evaluate()
@@ -45,6 +61,8 @@ Flower flowers[n], bestFlower;
 
 void init()
 {
+  for (int i = 0; i < dimensions; i ++) lowerLimit[i] = -100, upperLimit[i] = 100;
+
   srand(time(NULL));
   for (int i = 0; i < n; i ++)
   {
@@ -66,7 +84,7 @@ void nextIteration()
       // vector<float> dS = (flowers[i].x - bestFlower.x) * Levy();
       vector<float> dS = Levy();
       // printf("Here %d m biotic\n", i); fflush(stdout);
-      current.x = flowers[i].x + dS; // missing limit
+      current.x = limit(flowers[i].x + dS); // missing limit
     }
     else // Abiotic
     {
@@ -74,7 +92,7 @@ void nextIteration()
       float epsilon = rand() / RAND_MAX;
       int j = rand() % n, k = rand() % n;
       while (j == k) k = rand() % n;
-      current.x = current.x + (flowers[j].x - flowers[k].x) * epsilon; // missing limit
+      current.x = limit(current.x + (flowers[j].x - flowers[k].x) * epsilon); // missing limit
     }
     // printf("Here %d f\n", i); fflush(stdout);
 
