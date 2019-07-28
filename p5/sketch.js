@@ -91,7 +91,7 @@ function draw() {
 function Levy() {
   var temp = new Array(d);
   for (var i = 0; i < d; i ++) {
-    let sigma = pow((gamma(1+beta)*sin(PI*beta/2)/(gamma((1+beta)/2)*beta*pow(2,((beta-1)/2)))), (1/beta));
+  let sigma = pow((gamma(1+beta)*sin(PI*beta/2)/(gamma((1+beta)/2)*beta*pow(2,((beta-1)/2)))), (1/beta));
     let u = mult(randomVector(), sigma);
     let v = randomVector();
     let step = powDot(divDot(u, absVector(v)), 1/beta);
