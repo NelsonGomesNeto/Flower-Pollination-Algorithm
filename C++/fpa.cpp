@@ -7,7 +7,7 @@ const float PI = acos(-1);
 using namespace std;
 
 // n == Amount of Flowers
-const int n = 20, iterations = 20000;
+const int n = 20, iterations = 1000;
 
 const float p = 0.8;
 
