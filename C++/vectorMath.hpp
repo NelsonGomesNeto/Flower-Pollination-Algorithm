@@ -48,6 +48,11 @@ vector<vector<float>> matMult(vector<vector<float>> a, vector<vector<float>> b)
 }
 vector<vector<float>> matAdd(vector<vector<float>> a, vector<vector<float>> b)
 {
+  if (a.size() != b.size() || a[0].size() != b[0].size())
+  {
+    printf("matAdd can't be done: (%d x %d) * (%d x %d)\n", (int) a.size(), (int) a[0].size(), (int) b.size(), (int) b[0].size()); fflush(stdout);
+    exit(0);
+  }
   vector<vector<float>> temp = a;
   for (int i = 0; i < a.size(); i ++)
     for (int j = 0; j < a[0].size(); j ++)

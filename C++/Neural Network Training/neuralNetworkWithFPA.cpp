@@ -8,7 +8,7 @@ const float PI = acos(-1);
 using namespace std;
 
 Database database, traindb, testdb;
-vector<int> layers = {8, 8, 1};
+vector<int> layers = {8, 2, 1};
 
 // n == Amount of Flowers
 const int n = 20, iterations = 100000;
@@ -45,7 +45,7 @@ struct NeuralNetwork
       }
     }
     biases.resize(layersVec.size() - 1);
-    for (int i = 0; i < layersVec[i] - 1; i ++)
+    for (int i = 0; i < layersVec.size() - 1; i ++)
     {
       biases[i].resize(1);
       biases[i][0].resize(layersVec[i + 1]);
