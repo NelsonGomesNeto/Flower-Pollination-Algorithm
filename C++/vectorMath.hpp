@@ -26,7 +26,7 @@ vector<float> operator*(const vector<float> &a, const float b)
   return(temp);
 }
 
-vector<vector<float>> matMult(vector<vector<float>> a, vector<vector<float>> b)
+vector<vector<float>> matMult(vector<vector<float>> &a, vector<vector<float>> &b)
 {
   if (a[0].size() != b.size())
   {
@@ -36,7 +36,7 @@ vector<vector<float>> matMult(vector<vector<float>> a, vector<vector<float>> b)
   vector<vector<float>> temp(a.size());
   for (int i = 0; i < a.size(); i ++)
   {
-    temp[i] = vector<float>(b[0].size());
+    temp[i].resize(b[0].size());
     for (int j = 0; j < b[0].size(); j ++)
     {
       temp[i][j] = 0;
@@ -46,7 +46,7 @@ vector<vector<float>> matMult(vector<vector<float>> a, vector<vector<float>> b)
   }
   return(temp);
 }
-vector<vector<float>> matAdd(vector<vector<float>> a, vector<vector<float>> b)
+vector<vector<float>> matAdd(vector<vector<float>> &a, vector<vector<float>> &b)
 {
   if (a.size() != b.size() || a[0].size() != b[0].size())
   {
@@ -61,7 +61,7 @@ vector<vector<float>> matAdd(vector<vector<float>> a, vector<vector<float>> b)
 }
 
 inline float unitarySigmoid(float x) { return(1.0 / (1 + exp(-x))); }
-vector<vector<float>> sigmoid(vector<vector<float>> mat)
+vector<vector<float>> sigmoid(vector<vector<float>> &mat)
 {
   for (int i = 0; i < mat.size(); i ++)
     for (int j = 0; j < mat[0].size(); j ++)

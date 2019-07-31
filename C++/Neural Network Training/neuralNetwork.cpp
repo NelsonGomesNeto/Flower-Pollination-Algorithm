@@ -7,32 +7,33 @@ Database database, traindb, testdb;
 struct NeuralNetwork
 {
   vector<vector<vector<float>>> weights;
-  vector<vector<float>> biases;
-  void init(vector<int> layers)
+  vector<vector<vector<float>>> biases;
+  void init(vector<int> layersVec)
   {
-    weights.resize(layers.size() - 1);
-    for (int i = 0; i < layers.size() - 1; i ++)
+    weights.resize(layersVec.size() - 1);
+    for (int i = 0; i < layersVec.size() - 1; i ++)
     {
-      weights[i].resize(layers[i]);
-      for (int j = 0; j < layers[i]; j ++)
+      weights[i].resize(layersVec[i]);
+      for (int j = 0; j < layersVec[i]; j ++)
       {
-        weights[i][j].resize(layers[i + 1]);
-        for (int k = 0; k < layers[i + 1]; k ++)
+        weights[i][j].resize(layersVec[i + 1]);
+        for (int k = 0; k < layersVec[i + 1]; k ++)
           weights[i][j][k] = (float) rand() / RAND_MAX;
       }
     }
-    biases.resize(layers.size() - 1);
-    for (int i = 0; i < layers[i] - 1; i ++)
+    biases.resize(layersVec.size() - 1);
+    for (int i = 0; i < layersVec.size() - 1; i ++)
     {
-      biases[i].resize(layers[i + 1]);
-      for (int j = 0; j < layers[i + 1]; j ++)
-        biases[i][j] = (float) rand() / RAND_MAX;
+      biases[i].resize(1);
+      biases[i][0].resize(layersVec[i + 1]);
+      for (int j = 0; j < layersVec[i + 1]; j ++)
+        biases[i][0][j] = (float) rand() / RAND_MAX;
     }
   }
   void print()
   {
     printf("NeuralNetwork:\n");
-    printf("\t%d layers\n", (int) weights.size() + 1);
+    printf("\t%d layersVec\n", (int) weights.size() + 1);
     printf("\tweights:\n");
     for (int i = 0; i < weights.size(); i ++)
     {
@@ -48,9 +49,53 @@ struct NeuralNetwork
     for (int i = 0; i < biases.size(); i ++)
     {
       printf("\t\t%d (1 x %d):\n\t\t\t", i + 1, (int) biases[i].size());
-      for (int j = 0; j < biases[i].size(); j ++)
-        printf("%3.1f%c", biases[i][j], j < biases[i].size() - 1 ? ' ' : '\n');
+      for (int j = 0; j < biases[i][0].size(); j ++)
+        printf("%3.1f%c", biases[i][0][j], j < biases[i].size() - 1 ? ' ' : '\n');
     }
+  }
+  void setUnidimensionalVector(vector<float> &temp)
+  {
+    int a = 0;
+    for (int i = 0; i < weights.size(); i ++)
+      for (int j = 0; j < weights[i].size(); j ++)
+        for (int k = 0; k < weights[i][j].size(); k ++)
+          weights[i][j][k] = temp[a ++];
+    for (int i = 0; i < biases.size(); i ++)
+      for (int j = 0; j < biases[i].size(); j ++)
+        for (int k = 0; k < biases[i][j].size(); k ++)
+          biases[i][j][k] = temp[a ++];
+  }
+  vector<float> getUnidimensionalVector()
+  {
+    vector<float> temp;
+    for (int i = 0; i < weights.size(); i ++)
+      for (int j = 0; j < weights[i].size(); j ++)
+        for (int k = 0; k < weights[i][j].size(); k ++)
+          temp.push_back(weights[i][j][k]);
+    for (int i = 0; i < biases.size(); i ++)
+      for (int j = 0; j < biases[i].size(); j ++)
+        for (int k = 0; k < biases[i][j].size(); k ++)
+          temp.push_back(biases[i][j][k]);
+    return(temp);
+  }
+  vector<float> feedForward(vector<float> x)
+  {
+    vector<vector<float>> ans; ans.push_back(x);
+    for (int i = 0; i < weights.size(); i ++)
+      ans = sigmoid(matAdd(matMult(ans, weights[i]), biases[i]));
+    return(ans[0]);
+  }
+  vector<float> classify(Database db)
+  {
+    vector<float> ans;
+    for (int i = 0; i < db.size(); i ++)
+    {
+      vector<float> kkk;
+      for (int j = 0; j < db[i].size() - 1; j ++) kkk.push_back(db[i][j]);
+      vector<float> output = feedForward(kkk);
+      ans.push_back(round(output[0]));
+    }
+    return(ans);
   }
 };
 NeuralNetwork neuralNetwork;

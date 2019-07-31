@@ -8,7 +8,7 @@ const float PI = acos(-1);
 using namespace std;
 
 Database database, traindb, testdb;
-vector<int> layers = {8, 2, 1};
+vector<int> layers = {8, 8, 1};
 
 // n == Amount of Flowers
 const int n = 20, iterations = 100000;
@@ -31,27 +31,34 @@ struct NeuralNetwork
 {
   vector<vector<vector<float>>> weights;
   vector<vector<vector<float>>> biases;
-  void init(vector<int> layersVec)
+  bool ready = false;
+  void init(vector<int> &layersVec)
   {
-    weights.resize(layersVec.size() - 1);
+    printf("fuck s\n"); fflush(stdout);
+    if (!ready) weights.clear(), biases.clear();
+    printf("fuck m\n"); fflush(stdout);
+    if (!ready) weights.resize(layersVec.size() - 1);
     for (int i = 0; i < layersVec.size() - 1; i ++)
     {
-      weights[i].resize(layersVec[i]);
+      if (!ready) weights[i].resize(layersVec[i]);
       for (int j = 0; j < layersVec[i]; j ++)
       {
-        weights[i][j].resize(layersVec[i + 1]);
+        if (!ready) weights[i][j].resize(layersVec[i + 1]);
         for (int k = 0; k < layersVec[i + 1]; k ++)
           weights[i][j][k] = (float) rand() / RAND_MAX;
       }
     }
-    biases.resize(layersVec.size() - 1);
+    if (!ready) biases.resize(layersVec.size() - 1);
     for (int i = 0; i < layersVec.size() - 1; i ++)
     {
-      biases[i].resize(1);
-      biases[i][0].resize(layersVec[i + 1]);
+      if (!ready) biases[i].resize(1);
+      if (!ready) biases[i][0].resize(layersVec[i + 1]);
       for (int j = 0; j < layersVec[i + 1]; j ++)
         biases[i][0][j] = (float) rand() / RAND_MAX;
     }
+    ready = true;
+    printf("fuck f\n"); fflush(stdout);
+    // print();
   }
   void print()
   {
@@ -71,9 +78,9 @@ struct NeuralNetwork
     printf("\tbiases:\n");
     for (int i = 0; i < biases.size(); i ++)
     {
-      printf("\t\t%d (1 x %d):\n\t\t\t", i + 1, (int) biases[i].size());
+      printf("\t\t%d (1 x %d):\n\t\t\t", i + 1, (int) biases[i][0].size());
       for (int j = 0; j < biases[i][0].size(); j ++)
-        printf("%3.1f%c", biases[i][0][j], j < biases[i].size() - 1 ? ' ' : '\n');
+        printf("%3.1f%c", biases[i][0][j], j < biases[i][0].size() - 1 ? ' ' : '\n');
     }
   }
   void setUnidimensionalVector(vector<float> &temp)
@@ -105,7 +112,11 @@ struct NeuralNetwork
   {
     vector<vector<float>> ans; ans.push_back(x);
     for (int i = 0; i < weights.size(); i ++)
-      ans = sigmoid(matAdd(matMult(ans, weights[i]), biases[i]));
+    {
+      vector<vector<float>> mult = matMult(ans, weights[i]);
+      vector<vector<float>> add = matAdd(mult, biases[i]);
+      ans = sigmoid(add);
+    }
     return(ans[0]);
   }
   vector<float> classify(Database db)
@@ -145,6 +156,7 @@ struct Flower
   {
     neuralNetwork.init(layers);
     x = neuralNetwork.getUnidimensionalVector();
+    printf("here\n"); fflush(stdout);
     evaluate();
   }
   float evaluate()
@@ -173,6 +185,7 @@ void init()
   splitDatabase(database, traindb, testdb, 0.8);
   neuralNetwork.init(layers);
   dimensions = neuralNetwork.getUnidimensionalVector().size();
+  printf("Initialized neural network\n"); fflush(stdout);
 
   for (int i = 0; i < dimensions; i ++) lowerLimit[i] = -100, upperLimit[i] = 100;
 
@@ -180,10 +193,11 @@ void init()
   for (int i = 0; i < n; i ++)
   {
     flowers[i].init();
+    printf("Initialized %d flower\n", i); fflush(stdout);
     if (i == 0 || flowers[i].fitness < bestFlower.fitness)
       bestFlower = flowers[i];
   }
-  printf("Started\n");
+  printf("Started\n"); fflush(stdout);
 }
 
 void nextIteration()
@@ -218,6 +232,7 @@ void nextIteration()
 int main()
 {
   init();
+  neuralNetwork.print();
 
   for (int t = 0; t < iterations; t ++)
   {
