@@ -11,7 +11,7 @@ trainX, trainY = data.iloc[:,:-1], data.iloc[:,-1]
 
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(input_shape=([8])),
-    tf.keras.layers.Dense(64, activation=tf.nn.relu),
+    tf.keras.layers.Dense(8, activation=tf.nn.relu),
     tf.keras.layers.Dense(2, activation=tf.nn.softmax)
 ])
 model.compile(optimizer='adam',

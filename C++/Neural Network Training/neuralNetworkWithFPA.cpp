@@ -34,9 +34,7 @@ struct NeuralNetwork
   bool ready = false;
   void init(vector<int> &layersVec)
   {
-    printf("fuck s\n"); fflush(stdout);
     if (!ready) weights.clear(), biases.clear();
-    printf("fuck m\n"); fflush(stdout);
     if (!ready) weights.resize(layersVec.size() - 1);
     for (int i = 0; i < layersVec.size() - 1; i ++)
     {
@@ -57,8 +55,6 @@ struct NeuralNetwork
         biases[i][0][j] = (float) rand() / RAND_MAX;
     }
     ready = true;
-    printf("fuck f\n"); fflush(stdout);
-    // print();
   }
   void print()
   {
@@ -156,7 +152,6 @@ struct Flower
   {
     neuralNetwork.init(layers);
     x = neuralNetwork.getUnidimensionalVector();
-    printf("here\n"); fflush(stdout);
     evaluate();
   }
   float evaluate()
@@ -185,7 +180,6 @@ void init()
   splitDatabase(database, traindb, testdb, 0.8);
   neuralNetwork.init(layers);
   dimensions = neuralNetwork.getUnidimensionalVector().size();
-  printf("Initialized neural network\n"); fflush(stdout);
 
   for (int i = 0; i < dimensions; i ++) lowerLimit[i] = -100, upperLimit[i] = 100;
 
@@ -193,7 +187,6 @@ void init()
   for (int i = 0; i < n; i ++)
   {
     flowers[i].init();
-    printf("Initialized %d flower\n", i); fflush(stdout);
     if (i == 0 || flowers[i].fitness < bestFlower.fitness)
       bestFlower = flowers[i];
   }
