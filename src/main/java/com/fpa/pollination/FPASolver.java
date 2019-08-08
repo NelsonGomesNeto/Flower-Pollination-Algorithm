@@ -50,12 +50,19 @@ public class FPASolver {
         }
     }
 
+    public Vector dot(Vector a, Vector b) {
+        Vector temp = new BasicVector(a.length());
+        for (int i = 0; i < a.length(); i ++)
+            temp.set(i, a.get(i) * b.get(i));
+        return(temp);
+    }
+
     public void nextIteration() {
         for (int i = 0; i < n; i++) {
             Flower current = flowers.get(i);
             if (Math.random() > p) {
                 Levy levy = new Levy(dimensions);
-                BasicVector ds = levy.levy();
+                Vector ds = dot(levy.levy(), (current.x.subtract(bestFlower.x)));
                 current.x = current.x.add(ds);
 		//System.out.println("Global: " + current.x);
                 limit(current.x);
@@ -64,7 +71,7 @@ public class FPASolver {
                 int j = (int)(Math.random() * n), k = (int)(Math.random() * n);
                 while (j == k)
                     k = (int)(Math.random() * n);
-                current.x = current.x.add(flowers.get(j).x.subtract(flowers.get(k).x));
+                current.x = current.x.add(flowers.get(j).x.subtract(flowers.get(k).x).multiply(0.05));
 		//System.out.println("Local : " + current.x);
                 limit(current.x);
             }
@@ -72,7 +79,7 @@ public class FPASolver {
             if (current.getFitness() >= flowers.get(i).getFitness())
                 flowers.set(i, current.copy());
             if (current.getFitness() >= bestFlower.getFitness())
-                bestFlower = current;
+                bestFlower = current.copy();
         }
     }
 
