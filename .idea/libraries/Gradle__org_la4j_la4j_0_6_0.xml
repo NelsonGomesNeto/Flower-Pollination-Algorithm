@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.la4j:la4j:0.6.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.la4j/la4j/0.6.0/17f343e9aaddce6a22cf731d38bace0e820134e3/la4j-0.6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.la4j/la4j/0.6.0/8db721d230841e6d27c66516e349e2cd1c4b4b55/la4j-0.6.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
