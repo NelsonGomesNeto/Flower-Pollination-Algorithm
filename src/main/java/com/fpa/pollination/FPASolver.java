@@ -57,13 +57,15 @@ public class FPASolver {
                 Levy levy = new Levy(dimensions);
                 BasicVector ds = levy.levy();
                 current.x = current.x.add(ds);
+		//System.out.println("Global: " + current.x);
                 limit(current.x);
             } else {
                 double epsilon = new Random().nextGaussian();
                 int j = (int)(Math.random() * n), k = (int)(Math.random() * n);
                 while (j == k)
                     k = (int)(Math.random() * n);
-                current.x.add(flowers.get(j).x.subtract(flowers.get(k).x).multiply(epsilon));
+                current.x = current.x.add(flowers.get(j).x.subtract(flowers.get(k).x));
+		//System.out.println("Local : " + current.x);
                 limit(current.x);
             }
             current.evaluate();
