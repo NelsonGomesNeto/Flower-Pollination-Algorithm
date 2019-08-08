@@ -7,6 +7,25 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+task fatJar(type: Jar) {
+manifest {
+attributes 'Implementation-Title': 'fpa', 
+'Implementation-Version': version,
+'Main-Class': 'com.fpa.Main'
+}
+baseName = project.name + '-all'
+from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+with jar
+}
+
+
+task(runSimple, dependsOn: 'classes', type: JavaExec) {
+    main = 'com.fpa.Main'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+defaultTasks 'runSimple'
+
 repositories {
     mavenCentral()
 }

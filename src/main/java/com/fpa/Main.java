@@ -14,7 +14,7 @@ public class Main {
         int K = 7, R = 63;
         Geometry city = City.getCity1();
         BaseStationEvaluator bsEvaluator = new BaseStationEvaluator(city, K, geoFactory, R);
-        FPASolver solver = new FPASolver(100, K * 2, iter, 0.6f, true, bsEvaluator);
+        FPASolver solver = new FPASolver(20, K * 2, iter, 0.8f, true, bsEvaluator);
         while (true) {
             solver.nextIteration();
             solver.getBestFlower().print();
