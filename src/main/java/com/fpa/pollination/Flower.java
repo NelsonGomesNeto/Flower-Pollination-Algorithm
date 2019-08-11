@@ -1,15 +1,18 @@
 package com.fpa.pollination;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import org.la4j.Vector;
 import org.la4j.vector.DenseVector;
 import org.la4j.vector.dense.BasicVector;
 
 import javax.swing.plaf.basic.BasicBorders;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Flower {
 
-    Vector x;
+    public Vector x;
     private Double fitness;
     IFlowerFitnessEvaluator evaluator;
 
