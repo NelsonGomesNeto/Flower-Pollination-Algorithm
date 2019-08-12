@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="Flower-Pollination-Algorithm_main" target="1.8" />
+      <module name="Flower-Pollination-Algorithm_test" target="1.8" />
       <module name="fpa_main" target="1.8" />
       <module name="fpa_test" target="1.8" />
     </bytecodeTargetLevel>

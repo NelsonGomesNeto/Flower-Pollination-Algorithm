@@ -22,6 +22,7 @@ public class Flower {
         Random random = new Random(System.currentTimeMillis());
         for (int i = 0; i < dimensions; i++) {
             double value = Math.abs(random.nextInt((int)upper[i]));
+//            double value = random.nextInt((int) (upper[i] + lower[i]) / 2) + lower[i] + (upper[i] + lower[i]) / 3.0;
             x.set(i,  value);
         }
         evaluate();
@@ -59,7 +60,6 @@ public class Flower {
         for (int i = 0; i < x.length(); i++)
             System.out.printf("%5.3f%c", x.get(i), i < x.length() - 1 ? ' ' : ']');
         System.out.printf(" - %8.5f\n", fitness);
-        System.out.println();
     }
 
     private void limit(Vector vector, float[] upper, float[] lower) {

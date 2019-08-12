@@ -16,7 +16,7 @@ public class Main {
         int K = 7, R = 63;
         Geometry city = City.getCity1();
         BaseStationEvaluator bsEvaluator = new BaseStationEvaluator(city, K, geoFactory, R);
-        FPASolver solver = new FPASolver(20, K * 2, iter, 0.8f, true, bsEvaluator);
+        FPASolver solver = new FPASolver(20, K * 2, iter, 0.2f, true, bsEvaluator);
         int i = 0;
 
         JFrame frame = new JFrame("ERBs") ;
@@ -27,10 +27,11 @@ public class Main {
         frame.setVisible(true);
         while (true) {
             solver.nextIteration();
-            //solver.getBestFlower().print();
             if (++i % 50 == 0) {
                 bsEvaluator.setBestFlower(solver.getBestFlower());
+                bsEvaluator.setIteration(i);
                 frame.repaint();
+                solver.getBestFlower().print();
             }
         }
 //        System.out.println("Finished. Best Flower:");

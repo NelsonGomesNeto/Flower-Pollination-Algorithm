@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class BaseStationEvaluator extends JPanel implements IFlowerFitnessEvaluator {
 
     Geometry city;
-    int K, R;
+    int K, R, iteration;
     GeometryFactory geoFactory;
     Polygon container;
     Flower bestFlower;
@@ -67,6 +67,7 @@ public class BaseStationEvaluator extends JPanel implements IFlowerFitnessEvalua
     public void setBestFlower(Flower f) {
         bestFlower = f;
     }
+    public void setIteration(int i) { iteration = i; }
 
     @Override
     public void paint(Graphics g) {
@@ -84,9 +85,16 @@ public class BaseStationEvaluator extends JPanel implements IFlowerFitnessEvalua
         linShape = sw.toShape(city);
         g2d.setPaint(new Color(255, 0, 255));
         g2d.fill(linShape);
-        g2d.setPaint(Color.black);
+        g2d.setPaint(Color.cyan);
         linShape = sw.toShape(lastTot);
         g2d.fill(linShape);
+
+        g2d.setPaint(Color.black);
+        for (int i = 0, j = 0; i < bestFlower.x.length(); i+=2, j++)
+            g2d.drawString(Integer.toString(j), (int) bestFlower.x.get(i), (int) bestFlower.x.get(i + 1));
+
+        g2d.drawString("Iteration: " + iteration, 20, 20);
+        g2d.drawString("Fitness: " + bestFlower.getFitness(), 20, 40);
     }
 
 }
